@@ -1,30 +1,19 @@
 # Labspace
 
-Public laboratory catalog with anonymous downloads and administrator publishing.
+Публичный каталог лабораторных работ. Посетители смотрят и скачивают материалы без регистрации, а публикация доступна только администратору.
 
-## Run
+## Публикация на Vercel
 
-Requires Node.js 18 or newer. No dependencies are needed.
+1. Создай репозиторий на GitHub и загрузи в него файлы проекта.
+2. Открой [vercel.com/new](https://vercel.com/new), выбери репозиторий и нажми **Deploy**.
+3. В Vercel открой **Storage → Create Database → Blob**, создай Blob store и подключи его к проекту. Vercel добавит `BLOB_READ_WRITE_TOKEN`.
+4. В **Project Settings → Environment Variables** добавь для Production и Preview:
+   - `ADMIN_PASSWORD` — пароль администратора;
+   - `ADMIN_SECRET` — длинная случайная строка для cookie администратора.
+5. Нажми **Redeploy**.
 
-```powershell
-$env:ADMIN_PASSWORD = "your-private-password"
-$env:LABSPACE_STORAGE_DIR = "./storage"
-$env:PORT = "4181"
-node server.js
-```
+После деплоя постоянный адрес будет показан в разделе **Domains**, например `https://labspace-xxx.vercel.app`. Свой домен можно добавить там же через **Settings → Domains**.
 
-Open http://localhost:4181. The administrator entry is in the top-right corner.
-Visitors can browse and download without an account. Administrator sessions use
-an HttpOnly cookie and expire after 24 hours or a server restart.
+Администратор открывает сайт, нажимает кнопку публикации и вводит `ADMIN_PASSWORD`. Остальным пользователям регистрация не нужна. Файл для публикации ограничен 3 МБ: это оставляет запас для JSON-запроса внутри лимита Vercel Functions.
 
-Published metadata is stored in `.data/labs.json`; uploaded files are stored in
-`uploads/`. Keep both directories when moving the site to a host with persistent
-disk storage. Only the four frontend assets and public uploads should be served.
-
-When a host provides a mounted disk, set `LABSPACE_STORAGE_DIR` to that mount
-path (for example `/var/data`). The server will keep `.data/` and `uploads/`
-inside it.
-
-For an Internet deployment, set `ADMIN_PASSWORD` and use HTTPS. A temporary tunnel
-works only while this computer and the Node server remain running. A permanent
-deployment needs a Node host with persistent storage.
+Локальный запуск для разработки остаётся прежним: `npm start`. На Vercel маршруты находятся в `api/`, а каталог и файлы хранятся в Vercel Blob, потому что локальная файловая система serverless-функций не предназначена для постоянных данных.

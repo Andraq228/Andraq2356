@@ -4,3 +4,6 @@ chrometmp/
 shot-test.png
 node_modules/
 *.log
+
+.vercel
+.env*
