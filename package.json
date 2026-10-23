@@ -1,0 +1,12 @@
+{
+  "name": "labspace",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Public laboratory catalog with an administrator publisher",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

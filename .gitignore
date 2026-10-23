@@ -1,0 +1,6 @@
+.data/
+uploads/
+chrometmp/
+shot-test.png
+node_modules/
+*.log
